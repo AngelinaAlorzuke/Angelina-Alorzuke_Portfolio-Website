@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Project — Angelina Alorzuke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090a;
+    --bg-alt:#0b0f0d;
+    --card:#0e1310;
+    --line: rgba(255,255,255,0.09);
+    --line-soft: rgba(255,255,255,0.05);
+    --green:#FF3664;
+    --green-dim:#8c1230;
+    --green-soft: rgba(255,54,100,0.12);
+    --text:#f3f6f4;
+    --muted:#8fa098;
+    --muted-dim:#5e6c66;
+    --radius: 14px;
+    --maxw: 1200px;
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; margin:0; }
+  .signature{ font-family:'Caveat', cursive; }
+  a{color:inherit; text-decoration:none;}
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 32px; }
+  ::selection{ background:var(--green); color:#07090a; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--green); outline-offset:3px; }
+  button{ font-family:inherit; background:none; border:none; color:inherit; cursor:pointer; }
+  img{ max-width:100%; display:block; }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:fixed; top:0; left:0; right:0; z-index:80;
+    background:rgba(7,9,10,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+    padding:18px 0;
+  }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-mark{
+    width:38px; height:38px; border-radius:50%;
+    background:var(--green-soft); border:1px solid var(--green-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; font-weight:600; font-size:14px; color:var(--green);
+  }
+  nav.links{ display:flex; gap:34px; font-size:14px; color:var(--muted); }
+  nav.links a{ position:relative; padding-bottom:2px; }
+  nav.links a:hover{ color:var(--text); }
+  .nav-right{ display:flex; align-items:center; gap:22px; }
+  .nav-mail{ font-size:13.5px; color:var(--muted); }
+  .menu-btn{
+    display:flex; align-items:center; gap:10px;
+    font-size:13px; letter-spacing:0.04em; color:var(--text);
+  }
+  .menu-btn .bars{ width:22px; height:14px; position:relative; }
+  .menu-btn .bars span{ position:absolute; left:0; right:0; height:1.4px; background:var(--text); transition:transform .3s ease, opacity .3s ease; }
+  .menu-btn .bars span:nth-child(1){ top:0; }
+  .menu-btn .bars span:nth-child(2){ top:6px; }
+  .menu-btn .bars span:nth-child(3){ top:12px; }
+  body.menu-open .menu-btn .bars span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  body.menu-open .menu-btn .bars span:nth-child(2){ opacity:0; }
+  body.menu-open .menu-btn .bars span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+  @media (max-width:860px){ nav.links{ display:none; } .nav-mail{ display:none; } }
+
+  /* ---------- FULLSCREEN MENU OVERLAY ---------- */
+  .menu-overlay{
+    position:fixed; inset:0; z-index:70;
+    background:#05070680;
+    backdrop-filter:blur(16px);
+    display:flex; flex-direction:column;
+    justify-content:center;
+    padding:0 8vw;
+    transform:translateY(-100%);
+    transition:transform .55s cubic-bezier(.77,0,.18,1);
+  }
+  body.menu-open .menu-overlay{ transform:translateY(0); }
+  .menu-overlay a{
+    font-family:'Space Grotesk';
+    font-weight:600;
+    font-size:clamp(38px,7vw,84px);
+    color:var(--text);
+    display:block;
+    padding:10px 0;
+    border-bottom:1px solid var(--line-soft);
+    transition:color .2s ease, padding-left .2s ease;
+  }
+  .menu-overlay a span{ color:var(--muted-dim); font-family:'Inter'; font-size:14px; font-weight:500; margin-right:18px; vertical-align:middle; }
+  .menu-overlay a:hover{ color:var(--green); padding-left:14px; }
+  .menu-foot{ margin-top:50px; display:flex; gap:28px; }
+  .menu-foot a{
+    font-family:'Inter'; font-size:13.5px !important; font-weight:500; color:var(--muted) !important;
+    border-bottom:none; padding:0; display:inline; text-transform:none;
+  }
+  .menu-foot a:hover{ color:var(--text) !important; padding-left:0 !important; }
+
+  /* ---------- HERO ---------- */
+  .hero{ position:relative; padding:150px 0 60px; overflow:hidden; }
+  .hero-tags{ display:flex; gap:12px; margin-bottom:34px; flex-wrap:wrap; }
+  .hero-tags span{
+    font-size:12.5px; padding:8px 16px; border:1px solid var(--line); border-radius:100px; color:var(--muted);
+  }
+  .hero-row{ display:flex; justify-content:space-between; align-items:flex-end; gap:30px; flex-wrap:wrap; }
+  .hero-name{
+    font-size:clamp(56px,10vw,150px);
+    font-weight:700;
+    line-height:0.95;
+    color:var(--text);
+  }
+  .hero-name .cursor{ color:var(--green); }
+  .hero-status{ text-align:right; }
+  .hero-status .dot-row{ display:flex; align-items:center; gap:8px; justify-content:flex-end; margin-bottom:6px; }
+  .status-dot{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 10px 2px var(--green); }
+  .hero-status .avail{ font-size:13px; color:var(--muted); }
+  .hero-status .yr{ font-size:13px; color:var(--muted-dim); }
+
+  .hero-bottom{ display:grid; grid-template-columns:1.3fr 0.7fr; gap:60px; margin-top:44px; align-items:end; }
+  .hero-copy p{ font-size:17px; line-height:1.7; color:var(--muted); max-width:56ch; margin:0 0 30px; }
+  .btn-primary{
+    background:var(--green); color:#07120b; font-weight:600; font-size:14px;
+    padding:14px 26px; border-radius:100px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 30px -6px var(--green-soft); }
+  .btn-ghost{
+    border:1px solid var(--line); font-size:14px; padding:13px 24px; border-radius:100px; color:var(--text);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--green); background:var(--green-soft); }
+
+  @media (max-width:760px){
+    .hero-row{ align-items:flex-start; }
+    .hero-status{ text-align:left; }
+    .hero-status .dot-row{ justify-content:flex-start; }
+    .hero-bottom{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- SELECTED WORKS (mountain panel) ---------- */
+  .works-panel{ position:relative; padding:100px 0 70px; overflow:hidden; }
+  .mountain-glow{
+    position:absolute; top:-10%; left:0; right:0; height:70%;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 40%, rgba(255,54,100,0.12), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 75% 30%, rgba(255,54,100,0.08), transparent 70%);
+    filter:blur(30px);
+    pointer-events:none;
+  }
+  .mountain-svg{ position:absolute; bottom:0; left:0; right:0; width:100%; opacity:0.9; pointer-events:none; }
+
+  .works-top{ position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; margin-bottom:60px; }
+  .ticker-label{ font-size:13px; color:var(--muted-dim); margin-bottom:18px; }
+  .ticker{ position:relative; height:64px; overflow:hidden; }
+  .ticker-item{
+    position:absolute; left:0; right:0; top:0;
+    font-family:'Space Grotesk'; font-size:44px; font-weight:600;
+    color:var(--muted-dim);
+    transition: transform .6s cubic-bezier(.65,0,.35,1), opacity .6s ease, color .6s ease;
+    transform:translateY(64px);
+    opacity:0;
+  }
+  .ticker-item.active{ transform:translateY(0); opacity:1; color:var(--text); }
+  .ticker-item.prev{ transform:translateY(-64px); opacity:0; }
+
+  .badge-award{ display:flex; align-items:center; gap:12px; justify-self:end; }
+  .badge-award .ring{
+    width:56px; height:56px; border-radius:50%;
+    border:1px solid var(--green-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; color:var(--green); font-size:11px; font-weight:600; text-align:center;
+  }
+  .badge-award .txt{ font-size:13px; color:var(--muted); max-width:14ch; line-height:1.4; }
+
+  .works-carousel-wrap{ position:relative; z-index:2; }
+  .works-carousel{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:24px;
+  }
+  .work-slide{
+    border-radius:var(--radius); overflow:hidden; border:1px solid var(--line);
+    background:var(--card);
+  }
+  .work-slide .thumb{ aspect-ratio:4/3; overflow:hidden; background:#111; }
+  .work-slide .thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .85s var(--ease-premium); }
+  .work-slide:hover .thumb img{ transform:scale(1.035); }
+  .work-slide .tags{ display:flex; gap:8px; flex-wrap:wrap; padding:16px 18px 18px; }
+  .work-slide .tags span{ font-size:12px; padding:6px 12px; border:1px solid var(--line); border-radius:100px; color:var(--muted); }
+  .work-slide-wide{ grid-column:1 / -1; }
+  .work-slide-wide .thumb{ aspect-ratio:21/9; }
+  .thumb-placeholder{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(155deg, #1a1015, #07090a 70%);
+  }
+  .thumb-placeholder .glow{ position:absolute; inset:0; background:radial-gradient(circle at 30% 30%, var(--green-soft), transparent 65%); }
+  .thumb-placeholder .placeholder-mark{
+    position:relative; font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:clamp(28px,4vw,44px); color:var(--text); letter-spacing:-0.02em;
+  }
+  @media (max-width:760px){ .work-slide-wide .thumb{ aspect-ratio:4/3; } }
+
+  .works-controls{ display:flex; justify-content:flex-end; align-items:center; margin-top:30px; position:relative; z-index:2; }
+  .carousel-nav{ display:flex; gap:14px; }
+  .carousel-nav button{
+    font-size:13px; color:var(--muted); display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line); padding:10px 18px; border-radius:100px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .carousel-nav button:hover{ border-color:var(--green); color:var(--text); }
+  .year-badge{ font-family:'Space Grotesk'; font-size:22px; font-weight:600; color:var(--muted-dim); }
+  .year-badge b{ color:var(--green); font-weight:600; }
+
+  @media (max-width:760px){ .works-top{ grid-template-columns:1fr; } .badge-award{ justify-self:start; } .works-carousel{ grid-template-columns:1fr; } }
+
+  /* section shared */
+  section{ padding:110px 0; position:relative; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; gap:24px; flex-wrap:wrap; }
+  .section-title{ font-size:clamp(30px,4vw,42px); font-weight:600; }
+  .section-note{ max-width:38ch; color:var(--muted); font-size:15px; line-height:1.6; }
+
+  /* ---------- MORE PROJECTS STRIP ---------- */
+  .strip-carousel-wrap{ position:relative; }
+  .strip-carousel{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .strip-carousel::-webkit-scrollbar{ display:none; }
+  .strip-card{ flex:0 0 300px; scroll-snap-align:start; }
+  .strip-card .thumb{ aspect-ratio:1/1; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:#111; margin-bottom:14px; }
+  .strip-card .thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .85s var(--ease-premium); }
+  .strip-card:hover .thumb img{ transform:scale(1.035); }
+  .strip-card .cat{ font-size:12.5px; color:var(--muted-dim); margin-bottom:4px; }
+  .strip-card h4{ font-size:16px; font-weight:500; }
+  .strip-controls{ display:flex; justify-content:flex-end; gap:14px; margin-top:26px; }
+
+  /* ---------- SERVICES ---------- */
+  .service-block{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:50px; align-items:center;
+    padding:56px 0; border-top:1px solid var(--line-soft);
+  }
+  .service-block:last-child{ border-bottom:1px solid var(--line-soft); }
+  .service-visual{
+    position:relative; aspect-ratio:5/4; border-radius:var(--radius); overflow:hidden;
+    background:linear-gradient(155deg, #101c16, #07090a 70%);
+    border:1px solid var(--line);
+  }
+  .service-visual .glow{ position:absolute; inset:0; background:radial-gradient(circle at 30% 30%, rgba(255,54,100,0.22), transparent 65%); }
+  .service-visual .mini{
+    position:absolute; bottom:16px; right:16px; width:38%;
+    border-radius:10px; overflow:hidden; border:1px solid var(--line-soft);
+    box-shadow:0 12px 30px -8px rgba(0,0,0,0.6);
+  }
+  .service-num{ font-family:'Space Grotesk'; font-size:13px; color:var(--green); margin-bottom:14px; display:block; }
+  .service-block h3{ font-size:26px; font-weight:600; margin-bottom:14px; }
+  .service-block p{ font-size:15.5px; line-height:1.7; color:var(--muted); max-width:52ch; margin:0 0 24px; }
+  .service-list{ list-style:none; padding:0; margin:0 0 28px; display:grid; gap:11px; }
+  .service-list li{ font-size:14.5px; color:var(--muted); }
+  .service-list li b{ color:var(--muted-dim); font-weight:500; }
+  .service-price{ font-size:13.5px; color:var(--muted-dim); margin-bottom:22px; }
+
+  @media (max-width:820px){ .service-block{ grid-template-columns:1fr; } .service-visual{ order:-1; } }
+
+  /* ---------- PROCESS ---------- */
+  .process-stack{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative; }
+  .process-card{
+    border:1px solid var(--line); padding:34px 28px; background:var(--bg-alt);
+    transition:background .5s ease, border-color .5s ease;
+    position:relative;
+  }
+  .process-card:not(:first-child){ border-left:none; }
+  .process-card.active{
+    background:linear-gradient(160deg, rgba(255,54,100,0.14), rgba(255,54,100,0.02) 60%);
+    border-color:var(--green-dim);
+  }
+  .process-card .icon-ring{
+    width:52px; height:52px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; margin-bottom:26px;
+    font-family:'Space Grotesk'; font-size:18px; color:var(--muted);
+    transition:border-color .4s ease, color .4s ease;
+  }
+  .process-card.active .icon-ring{ border-color:var(--green); color:var(--green); }
+  .process-card h3{ font-size:19px; font-weight:600; margin-bottom:14px; line-height:1.3; }
+  .process-card p{ font-size:14px; color:var(--muted); line-height:1.6; margin:0 0 26px; }
+  .process-card .step-tag{
+    font-family:'Space Grotesk'; font-size:34px; font-weight:700;
+    color:transparent; -webkit-text-stroke:1.2px var(--muted-dim);
+    transition:-webkit-text-stroke-color .4s ease;
+  }
+  .process-card.active .step-tag{ -webkit-text-stroke-color:var(--green); }
+
+  @media (max-width:820px){
+    .process-stack{ grid-template-columns:1fr; }
+    .process-card{ border-left:1px solid var(--line) !important; border-top:none; }
+    .process-card:first-child{ border-top:1px solid var(--line); }
+  }
+
+  /* ---------- ABOUT + EXPERIENCE ---------- */
+  .about-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; }
+  .about-photo{
+    aspect-ratio:3/4; border-radius:var(--radius);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,54,100,0.25), transparent 60%),
+      linear-gradient(160deg, #11221a, #07090a 70%);
+    border:1px solid var(--line);
+    display:flex; align-items:flex-end; padding:24px; position:relative; overflow:hidden;
+  }
+  .about-photo .sig{ font-size:34px; color:var(--text); }
+  .about-photo .loc{ position:absolute; top:22px; left:24px; font-size:13px; color:var(--muted); display:flex; align-items:center; gap:7px; }
+  .about-eyebrow{ font-size:13px; color:var(--muted-dim); margin-bottom:18px; }
+  .about-body p{ font-size:16px; line-height:1.75; color:var(--muted); margin:0 0 26px; max-width:56ch; }
+  .stack-row{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:44px; }
+  .pill{ font-size:13px; padding:8px 16px; border-radius:100px; border:1px solid var(--line); color:var(--muted); }
+  .exp-title{ font-size:13px; color:var(--muted-dim); margin-bottom:18px; }
+  .exp-item{ display:flex; justify-content:space-between; align-items:baseline; padding:16px 0; border-top:1px solid var(--line-soft); gap:16px; }
+  .exp-item:last-child{ border-bottom:1px solid var(--line-soft); }
+  .exp-role{ font-size:15.5px; }
+  .exp-org{ color:var(--muted-dim); font-size:14px; }
+  .exp-date{ font-size:13.5px; color:var(--muted-dim); white-space:nowrap; }
+
+  @media (max-width:900px){ .about-grid{ grid-template-columns:1fr; } .about-photo{ aspect-ratio:16/9; } }
+
+  /* ---------- TECH MARQUEE ---------- */
+  .marquee-section{ padding:70px 0; border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+  .marquee-label{ text-align:center; font-size:13px; color:var(--muted-dim); margin-bottom:34px; }
+  .marquee-track-wrap{ overflow:hidden; }
+  .marquee-track{ display:flex; gap:60px; width:max-content; animation: scroll-l 52s linear infinite; }
+  .marquee-track span{
+    font-family:'Space Grotesk'; font-size:34px; font-weight:500; color:var(--muted-dim);
+    display:flex; align-items:center; gap:16px; white-space:nowrap;
+  }
+  .marquee-track span b{ color:var(--text); font-weight:500; }
+  .marquee-track span .tag{ color:var(--green); font-size:13px; font-family:'Inter'; border:1px solid var(--green-dim); padding:4px 10px; border-radius:100px; }
+  @keyframes scroll-l{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @keyframes scroll-r{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
+
+  /* ---------- ON THE WEB (stats replacing brands) ---------- */
+  .web-row{ display:flex; justify-content:center; gap:60px; flex-wrap:wrap; text-align:center; }
+  .web-stat b{ display:block; font-family:'Space Grotesk'; font-size:32px; font-weight:600; color:var(--green); }
+  .web-stat span{ font-size:13px; color:var(--muted-dim); }
+
+  /* ---------- ACHIEVEMENTS MARQUEE ---------- */
+  .ach-marquee-wrap{ overflow:hidden; margin-top:40px; }
+  .ach-track{ display:flex; gap:50px; width:max-content; animation: scroll-r 48s linear infinite; }
+  .ach-track span{ font-family:'Space Grotesk'; font-size:26px; color:var(--muted-dim); white-space:nowrap; }
+  .ach-track span b{ color:var(--text); font-weight:600; }
+  @media (prefers-reduced-motion: reduce){ .ach-track{ animation:none; } }
+
+  /* ---------- STATS COUNTERS ---------- */
+  .stats-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:30px; text-align:left; max-width:640px; }
+  .stat-item{ border-top:1px solid var(--line-soft); padding-top:20px; }
+  .stat-item .label{ font-size:12.5px; color:var(--muted-dim); margin-bottom:14px; }
+  .stat-item .num{ font-family:'Space Grotesk'; font-size:clamp(36px,5vw,56px); font-weight:600; color:var(--text); margin-bottom:10px; }
+  .stat-item .desc{ font-size:14px; color:var(--muted); line-height:1.5; max-width:26ch; }
+  @media (max-width:760px){ .stats-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{ border-top:1px solid var(--line-soft); }
+  .faq-item{ border-bottom:1px solid var(--line-soft); padding:26px 0; cursor:pointer; }
+  .faq-q{ display:flex; justify-content:space-between; align-items:center; gap:20px; }
+  .faq-q .idx{ font-family:'Space Grotesk'; font-size:13px; color:var(--muted-dim); margin-right:20px; }
+  .faq-q h4{ font-size:17px; font-weight:500; flex:1; }
+  .faq-q .chev{ font-size:18px; color:var(--muted-dim); transition:transform .3s ease; flex-shrink:0; }
+  .faq-item.open .chev{ transform:rotate(45deg); color:var(--green); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .faq-a p{ font-size:14.5px; color:var(--muted); line-height:1.65; margin:18px 0 0 33px; max-width:60ch; }
+  .faq-item.open .faq-a{ max-height:200px; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:70px; }
+  .contact-copy h2{ font-size:clamp(32px,5vw,52px); font-weight:600; margin-bottom:20px; }
+  .contact-copy p{ font-size:15.5px; color:var(--muted); line-height:1.7; max-width:42ch; margin-bottom:34px; }
+  .contact-info{ font-size:14px; color:var(--muted); display:grid; gap:8px; }
+  .contact-cta{
+    border:1px solid var(--line); border-radius:var(--radius); padding:40px;
+    background:linear-gradient(160deg, var(--green-soft), transparent 60%);
+    display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+  }
+  .contact-cta-eyebrow{ font-size:13px; color:var(--green); margin-bottom:14px; }
+  .contact-cta h3{ font-family:'Space Grotesk'; font-size:26px; font-weight:600; margin-bottom:14px; }
+  .contact-cta p{ font-size:15px; color:var(--muted); line-height:1.6; margin:0 0 26px; max-width:38ch; }
+  .contact-info b{ color:var(--text); }
+  .form-field{ margin-bottom:20px; }
+  .form-field label{ display:block; font-size:12.5px; color:var(--muted-dim); margin-bottom:8px; }
+  .form-field input, .form-field select, .form-field textarea{
+    width:100%; background:transparent; border:none; border-bottom:1px solid var(--line);
+    padding:10px 0; color:var(--text); font-family:'Inter'; font-size:15px;
+    transition:border-color .2s ease;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus{ outline:none; border-color:var(--green); }
+  .form-field select option{ background:var(--bg); }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .submit-btn{
+    margin-top:14px; background:var(--green); color:#07120b; font-weight:600; font-size:14px;
+    padding:15px 30px; border-radius:100px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .submit-btn:hover{ transform:translateY(-1px); box-shadow:0 8px 30px -6px var(--green-soft); }
+  @media (max-width:900px){ .contact-grid{ grid-template-columns:1fr; } .form-row{ grid-template-columns:1fr; } }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:90px 0 30px; border-top:1px solid var(--line-soft); }
+  .footer-top{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:70px; }
+  .footer-brand .nav-mark{ margin-bottom:18px; }
+  .footer-brand p{ font-size:14px; color:var(--muted); max-width:32ch; line-height:1.6; }
+  .footer-col h5{ font-size:12.5px; color:var(--muted-dim); margin-bottom:18px; font-weight:500; }
+  .footer-col a{ display:block; font-size:14.5px; color:var(--muted); margin-bottom:12px; transition:color .2s ease; }
+  .footer-col a:hover{ color:var(--text); }
+  .footer-bottom{
+    padding-top:26px; border-top:1px solid var(--line-soft);
+    display:flex; justify-content:space-between; font-size:13px; color:var(--muted-dim); flex-wrap:wrap; gap:10px;
+  }
+  .back-top{ display:flex; align-items:center; gap:8px; color:var(--muted); }
+  .back-top:hover{ color:var(--green); }
+
+  /* reveal */
+  .reveal-item{ opacity:0; transform:translateY(12px); animation: reveal .85s var(--ease-premium) forwards; }
+  .r1{ animation-delay:.05s; } .r2{ animation-delay:.16s; } .r3{ animation-delay:.28s; } .r4{ animation-delay:.4s; }
+  @keyframes reveal{ to{ opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce){ .reveal-item{ opacity:1; transform:none; animation:none; } }
+
+  /* ---------- SCROLL REVEAL (on-scroll, matches reference's staged section entrances) ---------- */
+  .sr{ opacity:0; transform:translateY(14px); transition:opacity .85s var(--ease-premium), transform .85s var(--ease-premium); }
+  .sr.in{ opacity:1; transform:translateY(0); }
+  .sr-delay1.in{ transition-delay:.08s; } .sr-delay2.in{ transition-delay:.16s; } .sr-delay3.in{ transition-delay:.24s; }
+  @media (prefers-reduced-motion: reduce){ .sr{ opacity:1; transform:none; transition:none; } }
+
+  /* ---------- CURSOR TRAIL ---------- */
+
+  /* ---------- BACK TO TOP FAB ---------- */
+  .fab-top{
+    position:fixed; right:22px; bottom:22px; z-index:65;
+    width:46px; height:46px; border-radius:50%;
+    border:1px solid var(--line); background:rgba(7,9,10,0.7); backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--green); font-size:16px;
+    opacity:0; transform:translateY(10px); pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease, border-color .3s ease, background .3s ease;
+  }
+  .fab-top.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .fab-top:hover{ border-color:var(--green); background:var(--green-soft); }
+
+  /* ---------- ABOUT: rotating badge ---------- */
+  .badge-orbit{
+    position:absolute; top:20px; right:20px; width:104px; height:104px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .badge-orbit svg{ width:100%; height:100%; animation:spin-slow 46s linear infinite; }
+  .badge-orbit text{ font-family:'Inter'; font-size:8.6px; letter-spacing:2px; fill:var(--muted); text-transform:uppercase; }
+  .badge-orbit .dot{ position:absolute; width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px 2px var(--green); }
+  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .badge-orbit svg{ animation:none; } }
+
+  /* ---------- ABOUT: progressive text reveal ---------- */
+  .about-body p.reveal-text span{ color:var(--muted-dim); transition:color .5s ease; }
+  .about-body p.reveal-text span.lit{ color:var(--text); }
+
+  /* ---------- PROCESS: stronger active emphasis ---------- */
+  .process-card{ transform:scale(1); }
+  .process-card.active{ transform:scale(1.045); box-shadow:0 24px 60px -20px rgba(0,0,0,0.55); z-index:2; }
+  @media (max-width:820px){ .process-card.active{ transform:scale(1); } }
+
+  /* ---------- TECH MARQUEE: second row + highlighted band ---------- */
+  .marquee-band{
+    padding:14px 0; margin-top:26px; background:var(--green-soft);
+    border-top:1px solid var(--green-dim); border-bottom:1px solid var(--green-dim);
+    overflow:hidden;
+  }
+  .marquee-band .marquee-track3{ display:flex; gap:60px; width:max-content; animation: scroll-l 46s linear infinite; }
+  .marquee-band .marquee-track3 span{
+    font-family:'Space Grotesk'; font-size:22px; font-weight:600; color:var(--green);
+    display:flex; align-items:center; gap:10px; white-space:nowrap;
+  }
+  @media (prefers-reduced-motion: reduce){ .marquee-band .marquee-track3{ animation:none; } }
+
+  /* ---------- FOOTER: thanks sign-off ---------- */
+  .footer-mark-wrap{
+    margin-top:14px; padding-bottom:30px;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+  }
+  .footer-thanks{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; line-height:0.86;
+    font-size:clamp(80px,16vw,260px); color:var(--text);
+    letter-spacing:-0.02em; text-transform:uppercase; user-select:none;
+  }
+  .footer-thanks-sub{
+    font-family:'Caveat', cursive; font-weight:600;
+    font-size:clamp(30px,5vw,60px); color:var(--green);
+    display:inline-block; transform:rotate(-3deg); transform-origin:left center;
+    margin-top:2px; white-space:nowrap; user-select:none;
+  }
+
+  #cursorTrail{ position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:60; }
+  @media (hover:none), (max-width:900px){ #cursorTrail{ display:none; } }
+
+  /* ---------- Count-up number readiness ---------- */
+  .count-target{ font-variant-numeric:tabular-nums; }
+
+
+  /* ---------- PROJECT DETAIL PAGE ---------- */
+  .project-hero{ padding:150px 0 0; }
+  .back-link{ font-size:13px; color:var(--muted); display:inline-flex; align-items:center; gap:8px; margin-bottom:34px; transition:color .2s ease; }
+  .back-link:hover{ color:var(--green); }
+  .project-hero .tags{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+  .project-hero .tags span{ font-size:12.5px; padding:8px 16px; border:1px solid var(--line); border-radius:100px; color:var(--muted); }
+  .project-hero h1{ font-size:clamp(36px,6vw,64px); font-weight:600; margin-bottom:14px; }
+  .project-hero .meta{ font-size:14px; color:var(--muted-dim); }
+  .project-cover{ aspect-ratio:16/9; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:var(--card); margin:44px 0 24px; position:relative; }
+  .project-cover img{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* Default (portrait phone-demo) video cover: the outer card is now full
+     width, same visual weight as every other cover — a "big headline card"
+     backdrop with the phone recording sized generously and centered inside
+     it, rather than a small box floating in raw empty space. */
+  .project-cover.video-cover{
+    aspect-ratio:16/9; max-width:none; margin:44px 0 24px;
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 40%, rgba(255,54,100,0.14), transparent 68%),
+      linear-gradient(155deg, #14181a, #07090a 75%);
+    display:flex; align-items:center; justify-content:center; padding:36px;
+  }
+  .project-cover.video-cover video{
+    width:auto; height:100%; max-width:100%; max-height:100%;
+    object-fit:contain; display:block;
+    border-radius:18px; box-shadow:0 30px 70px -20px rgba(0,0,0,0.6);
+  }
+  @media (max-width:640px){ .project-cover.video-cover{ padding:20px; } }
+  /* A landscape screen-recording (a website walkthrough, not a phone-shaped
+     app demo) gets the same full-width, cropped-to-fill treatment as a
+     static image cover — no portrait box, no letterboxing. */
+  .project-cover.video-cover.landscape{
+    aspect-ratio:16/9; max-width:none; background:var(--card); padding:0;
+  }
+  .project-cover.video-cover.landscape video{
+    width:100%; height:100%; object-fit:cover; border-radius:0; box-shadow:none;
+  }
+  .project-cover.placeholder{ display:flex; align-items:center; justify-content:center; background:linear-gradient(155deg, #1a1015, #07090a 70%); }
+  .project-cover.placeholder .glow{ position:absolute; inset:0; background:radial-gradient(circle at 30% 30%, var(--green-soft), transparent 65%); }
+  .project-cover.placeholder span{ position:relative; font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:clamp(30px,5vw,56px); color:var(--text); }
+
+  .project-gallery{ display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:18px; margin:0 0 70px; }
+  .gallery-item{ aspect-ratio:1/1; border-radius:14px; overflow:hidden; border:1px solid var(--line); background:var(--card); position:relative; }
+  .gallery-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gallery-item.placeholder{
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(155deg, #140d10, #07090a 70%);
+  }
+  .gallery-item.placeholder span{
+    font-size:12px; color:var(--muted-dim); text-align:center; line-height:1.4;
+    border:1px dashed var(--line); border-radius:100px; padding:8px 14px;
+  }
+  @media (max-width:600px){ .project-gallery{ gap:10px; } .gallery-item.placeholder span{ font-size:10.5px; padding:6px 10px; } }
+  /* ---------- Project write-up: five-question format ---------- */
+  .qa-block{ margin-bottom:30px; }
+  .qa-block:last-child{ margin-bottom:0; }
+  .qa-block h4{ font-size:15px; font-weight:600; color:var(--text); margin:0 0 8px; }
+  .qa-block p{ font-size:14.5px; color:var(--muted); line-height:1.7; margin:0; max-width:58ch; }
+
+
+  .project-body{ display:grid; grid-template-columns:1fr 0.55fr; gap:70px; padding-bottom:120px; }
+  .summary p{ font-size:16.5px; line-height:1.8; color:var(--muted); margin:0 0 24px; max-width:62ch; }
+  .project-side{ border-top:1px solid var(--line-soft); padding-top:24px; height:max-content; }
+  .project-side .row{ display:flex; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--line-soft); font-size:14px; gap:16px; }
+  .project-side .row span:first-child{ color:var(--muted-dim); }
+  .project-side .row span:last-child{ text-align:right; }
+  .project-cta{ margin-top:30px; display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
+  #projectNotFound{ display:none; padding:170px 0 130px; text-align:center; }
+  #projectNotFound .section-note{ margin:18px auto 30px; }
+  @media (max-width:900px){ .project-body{ grid-template-columns:1fr; } }
+
+
+  /* ---------- FULL-VIEW: hover to expand, click to open ----------
+     Designs that don't match their container's shape are cropped in the grid.
+     Hovering (desktop) grows the piece out to its true full shape; clicking or
+     tapping opens a lightbox you can step through with arrows / swipe. */
+  .fv-item{ position:relative; cursor:zoom-in; }
+  .fv-hint{
+    position:absolute; right:12px; bottom:12px; width:34px; height:34px; border-radius:50%;
+    display:grid; place-items:center; color:#fff; background:rgba(8,8,10,0.6);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    opacity:0; transform:scale(.8); transition:opacity .25s ease, transform .25s ease; pointer-events:none;
+  }
+  .fv-hint svg{ width:16px; height:16px; }
+  .fv-item:hover .fv-hint{ opacity:1; transform:none; }
+  @media (hover:none){ .fv-hint{ opacity:.9; transform:none; } }
+  .fv-peek{
+    position:fixed; z-index:900; pointer-events:none; overflow:hidden; border-radius:16px;
+    background:#0a0a0c; border:1px solid rgba(255,255,255,0.14);
+    box-shadow:0 40px 90px -24px rgba(0,0,0,0.75);
+    opacity:0; will-change:left,top,width,height;
+  }
+  .fv-peek.fv-on{ opacity:1; }
+  .fv-peek img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .fv-lightbox{
+    position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center;
+    background:rgba(6,6,8,0.93); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .fv-lightbox.open{ opacity:1; pointer-events:auto; }
+  .fv-lightbox img{
+    max-width:min(92vw,1100px); max-height:88vh; object-fit:contain; border-radius:12px;
+    transform:scale(.96); transition:transform .35s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 40px 100px -30px rgba(0,0,0,0.8); user-select:none;
+  }
+  .fv-lightbox.open img{ transform:none; }
+  .fv-btn{
+    position:absolute; width:46px; height:46px; border-radius:50%; border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.06); color:#fff; font-size:22px; line-height:1; cursor:pointer;
+    display:grid; place-items:center; transition:background .2s ease, border-color .2s ease;
+  }
+  .fv-btn:hover{ background:rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.45); }
+  .fv-close{ top:18px; right:18px; }
+  .fv-prev{ left:18px; top:50%; transform:translateY(-50%); }
+  .fv-next{ right:18px; top:50%; transform:translateY(-50%); }
+  .fv-count{ position:absolute; bottom:18px; left:50%; transform:translateX(-50%); font-size:13px; color:rgba(255,255,255,0.65); letter-spacing:.04em; }
+  @media (max-width:640px){ .fv-prev{ left:8px; } .fv-next{ right:8px; } .fv-btn{ width:40px; height:40px; } }
+  html.fv-lock{ overflow:hidden; }
+  .gallery-item.fv-item{ transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .25s ease; }
+  .gallery-item.fv-item:hover{ transform:translateY(-3px); border-color:var(--green); }
+</style>
+</head>
+<body>
+
+<canvas id="cursorTrail"></canvas>
+
+<button class="fab-top" id="fabTop" aria-label="Back to top">↑</button>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-mark" href="index.html">AA</a>
+    <nav class="links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-mail">angiealor555@gmail.com</span>
+      <button class="menu-btn" id="menuBtn">
+        <span class="bars"><span></span><span></span><span></span></span>
+        MENU
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay">
+  <a href="index.html#work"><span>01</span>Work</a>
+  <a href="index.html#services"><span>02</span>Services</a>
+  <a href="index.html#about"><span>03</span>About</a>
+  <a href="index.html#contact"><span>04</span>Contact</a>
+  <div class="menu-foot">
+    <a href="https://www.behance.net/angelinalorzuk" target="_blank" rel="noopener">Behance</a>
+    <a href="https://www.linkedin.com/in/angelinaalorzuke/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.instagram.com/pixperfect_cs/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div>
+
+<main>
+  <section class="project-hero" id="projectHeroSection">
+    <div class="wrap">
+      <a class="back-link reveal-item r1" href="index.html#work" id="backLink">← Back to work</a>
+      <div class="tags reveal-item r2" id="projTags"></div>
+      <h1 class="reveal-item r2" id="projTitle">Loading…</h1>
+      <div class="meta reveal-item r3" id="projMeta"></div>
+    </div>
+  </section>
+
+  <section id="projectBodySection" style="padding-top:0;">
+    <div class="wrap">
+      <div class="project-cover" id="projCover"></div>
+      <div class="project-gallery" id="projGallery"></div>
+      <div class="project-body">
+        <div class="summary" id="projSummary"></div>
+        <div class="project-side">
+          <div class="row"><span>Category</span><span id="projCategory">—</span></div>
+          <div class="row"><span>Year</span><span id="projYear">—</span></div>
+          <div class="row"><span>Role</span><span id="projRole">—</span></div>
+          <div class="project-cta">
+            <a class="btn-ghost" id="projExternal" href="#" target="_blank" rel="noopener" style="display:none;">View full case study on Behance →</a>
+            <a class="btn-primary" href="start-a-project.html">Start a similar project →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projectNotFound">
+    <div class="wrap">
+      <h2 class="section-title">Project not found</h2>
+      <p class="section-note">This project may have moved. Head back to see all of Angelina's work.</p>
+      <a class="btn-ghost" href="index.html#work">← Back to work</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-mark">AA</div>
+        <p>UI/UX and graphic designer based in Accra, Ghana, building interfaces and brand visuals with purpose.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Sitemap</h5>
+        <a href="index.html#work">Work</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Socials</h5>
+        <a href="https://www.behance.net/angelinalorzuk" target="_blank" rel="noopener">Behance</a>
+        <a href="https://www.linkedin.com/in/angelinaalorzuke/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/pixperfect_cs/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-mark-wrap">
+      <div class="footer-thanks">thanks</div>
+      <div class="footer-thanks-sub">for stopping by</div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Angelina Alorzuke's personal portfolio</span>
+      <a class="back-top" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const reduceMotionPref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Cursor trail (signature squiggle-line effect) ----------
+  (function(){
+    if(reduceMotionPref || window.matchMedia('(hover:none)').matches) return;
+    const canvas = document.getElementById('cursorTrail');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, points = [];
+    function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e=>{
+      points.push({x:e.clientX, y:e.clientY, t:Date.now()});
+      if(points.length > 26) points.shift();
+    });
+    function loop(){
+      ctx.clearRect(0,0,w,h);
+      const now = Date.now();
+      points = points.filter(p => now - p.t < 500);
+      if(points.length > 1){
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for(let i=1;i<points.length;i++){ ctx.lineTo(points[i].x, points[i].y); }
+        ctx.strokeStyle = 'rgba(255,54,100,0.35)';
+        ctx.lineWidth = 1.4;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+
+  // ---------- Back to top FAB ----------
+  const fabTop = document.getElementById('fabTop');
+  window.addEventListener('scroll', ()=>{
+    fabTop.classList.toggle('show', window.scrollY > 700);
+  });
+  fabTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ---------- Scroll reveal for section blocks ----------
+  document.querySelectorAll(
+    '.section-head, .service-block, .stat-item, .web-stat, .contact-copy, .contact-cta, .works-top, .badge-award, .start-info, .contact-form, .summary, .project-side'
+  ).forEach(el => el.classList.add('sr'));
+  const srObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add('in'); srObserver.unobserve(entry.target); }
+    });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.sr').forEach(el=> srObserver.observe(el));
+
+  // ---------- Count-up numbers ----------
+  (function(){
+    const targets = document.querySelectorAll('.count-target');
+    const countObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting) return;
+        const el = entry.target;
+        const end = parseInt(el.dataset.count, 10) || 0;
+        const suffix = el.dataset.suffix || '';
+        const dur = 1200;
+        const start = performance.now();
+        function tick(now){
+          const progress = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * end) + suffix;
+          if(progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        countObserver.unobserve(el);
+      });
+    }, { threshold:0.5 });
+    targets.forEach(el=> countObserver.observe(el));
+  })();
+
+  // Mobile / fullscreen menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+  document.querySelectorAll('.menu-overlay a').forEach(a=>{
+    a.addEventListener('click', ()=> document.body.classList.remove('menu-open'));
+  });
+
+  // ---------- Project data ----------
+  // Edit the text below to personalize each project's write-up.
+  // media: { type: 'image'|'video', src: '...' }
+  // gallery: any number of items — { src: '...' } for a filled slot, or { label: '...' } for an
+  // empty placeholder slot (label shows as a hint for what to drop in there).
+  // qa: five standard questions — brief, problem, role, approach, outcome.
+
+  // ---------- Full-view: hover to expand a design to its full shape, click to open a lightbox ----------
+  const FullView = (function(){
+    const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+
+    // one shared peek layer + one shared lightbox
+    const peek = document.createElement('div'); peek.className = 'fv-peek';
+    const peekImg = document.createElement('img'); peekImg.alt = ''; peek.appendChild(peekImg);
+    const box = document.createElement('div'); box.className = 'fv-lightbox';
+    box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label','Design preview');
+    box.innerHTML = '<button class="fv-btn fv-close" type="button" aria-label="Close">&times;</button>' +
+      '<button class="fv-btn fv-prev" type="button" aria-label="Previous">&#8249;</button>' +
+      '<img alt=""><button class="fv-btn fv-next" type="button" aria-label="Next">&#8250;</button><div class="fv-count"></div>';
+    document.body.appendChild(peek); document.body.appendChild(box);
+    const boxImg = box.querySelector('img'), count = box.querySelector('.fv-count');
+    let list = [], idx = 0, enterT = null, hideT = null, current = null;
+
+    function setRect(r){ peek.style.left = r.left+'px'; peek.style.top = r.top+'px'; peek.style.width = r.width+'px'; peek.style.height = r.height+'px'; }
+    function fullRect(item, img){
+      const r = img.naturalWidth && img.naturalHeight ? img.naturalWidth/img.naturalHeight : 1;
+      const vw = window.innerWidth, vh = window.innerHeight, m = 20;
+      let h = Math.min(vh*0.82, img.naturalHeight || vh), w = h*r;
+      const maxW = Math.min(vw*0.8, 760);
+      if(w > maxW){ w = maxW; h = w/r; }
+      const b = item.getBoundingClientRect();
+      let left = b.left + b.width/2 - w/2, top = b.top + b.height/2 - h/2;
+      left = Math.max(m, Math.min(left, vw - w - m)); top = Math.max(m, Math.min(top, vh - h - m));
+      return {left, top, width:w, height:h};
+    }
+    function showPeek(item){
+      const img = item.querySelector('img'); if(!img || !img.naturalWidth) return;
+      clearTimeout(hideT); current = item;
+      const b = item.getBoundingClientRect();
+      peek.style.transition = 'none'; peekImg.src = img.currentSrc || img.src; setRect(b);
+      peek.classList.add('fv-on'); void peek.offsetWidth;
+      peek.style.transition = 'left .42s cubic-bezier(.2,.7,.2,1), top .42s cubic-bezier(.2,.7,.2,1), width .42s cubic-bezier(.2,.7,.2,1), height .42s cubic-bezier(.2,.7,.2,1), opacity .2s ease';
+      setRect(fullRect(item, img));
+    }
+    function hidePeek(instant){
+      clearTimeout(enterT); if(!current) return;
+      const item = current; current = null;
+      if(instant){ peek.style.transition = 'none'; peek.classList.remove('fv-on'); return; }
+      peek.style.transition = 'left .3s ease, top .3s ease, width .3s ease, height .3s ease, opacity .3s ease';
+      setRect(item.getBoundingClientRect());
+      hideT = setTimeout(()=> peek.classList.remove('fv-on'), 220);
+    }
+    function render(){
+      boxImg.src = list[idx].src; boxImg.alt = list[idx].alt || '';
+      count.textContent = list.length > 1 ? (idx+1)+' / '+list.length : '';
+      box.querySelector('.fv-prev').style.display = box.querySelector('.fv-next').style.display = list.length > 1 ? '' : 'none';
+    }
+    function open(items, i){
+      hidePeek(true);
+      list = items.map(el => { const im = el.querySelector('img'); return {src: im.currentSrc || im.src, alt: im.alt}; });
+      idx = i; render(); box.classList.add('open'); document.documentElement.classList.add('fv-lock');
+    }
+    function close(){ box.classList.remove('open'); document.documentElement.classList.remove('fv-lock'); }
+    function step(d){ if(list.length < 2) return; idx = (idx + d + list.length) % list.length; render(); }
+    box.querySelector('.fv-close').addEventListener('click', close);
+    box.querySelector('.fv-prev').addEventListener('click', e=>{ e.stopPropagation(); step(-1); });
+    box.querySelector('.fv-next').addEventListener('click', e=>{ e.stopPropagation(); step(1); });
+    box.addEventListener('click', e=>{ if(e.target === box) close(); });
+    window.addEventListener('keydown', e=>{
+      if(!box.classList.contains('open')) return;
+      if(e.key === 'Escape'){ e.stopImmediatePropagation(); close(); }
+      else if(e.key === 'ArrowLeft'){ step(-1); } else if(e.key === 'ArrowRight'){ step(1); }
+    }, true);
+    let sx = null;
+    box.addEventListener('touchstart', e=>{ sx = e.touches[0].clientX; }, {passive:true});
+    box.addEventListener('touchend', e=>{ if(sx === null) return; const dx = e.changedTouches[0].clientX - sx; if(Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); sx = null; });
+    window.addEventListener('scroll', ()=> hidePeek(true), {passive:true});
+
+    // Wire up every item in a container. Safe to call again after re-rendering it.
+    function bind(root, selector){
+      if(!root) return;
+      const items = Array.from(root.querySelectorAll(selector)).filter(el => el.querySelector('img'));
+      items.forEach((item, i) => {
+        item.classList.add('fv-item');
+        if(!item.querySelector('.fv-hint')){ const h = document.createElement('span'); h.className = 'fv-hint'; h.innerHTML = ICON; item.appendChild(h); }
+        item.tabIndex = 0; item.setAttribute('role','button'); item.setAttribute('aria-label','View full design');
+        item.addEventListener('click', ()=> open(items, i));
+        item.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(items, i); } });
+        if(fine && !calm){
+          item.addEventListener('mouseenter', ()=>{ clearTimeout(enterT); enterT = setTimeout(()=> showPeek(item), 140); });
+          item.addEventListener('mouseleave', ()=>{ clearTimeout(enterT); hidePeek(false); });
+        }
+      });
+    }
+    return { bind };
+  })();
+
+  const PROJECTS = {
+    ourroots: {
+      title: 'Our Roots',
+      category: 'Web design, Branding, Community platform',
+      role: 'Web & Brand Designer',
+      year: '2026',
+      tags: ['Web design','Branding','Community platform'],
+      media: { type:'video', src:'assets/our-roots-demo.mp4', orientation:'landscape' },
+      gallery: [
+        {src:'assets/gallery/ourroots-1.jpg'},
+        {src:'assets/gallery/ourroots-2.jpg'},
+        {src:'assets/gallery/ourroots-3.jpg'},
+        {src:'assets/gallery/ourroots-4.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'Design a web presence and brand system for a community platform built for young Africans — a place to connect, share opportunities and grow careers together.' },
+        { q:'What problem were you solving?', a:'Most community platforms in this space feel generic or borrowed. The brief needed something that read as confident and unapologetically African, not a template with a new logo dropped in.' },
+        { q:'What was your role?', a:'Web design and brand direction — the visual identity, the homepage design, and the system it needed to hold up across web and social.' },
+        { q:'How did you approach it?', a:'Leaned into a bold, editorial red as the anchor colour, paired with a striking hero image and clear, purposeful navigation, so the community feels alive from the first scroll — ways to connect, learn and grow are surfaced immediately.' },
+        { q:'What was the outcome?', a:'A homepage and brand system strong enough to carry the platform across web, social and whatever touchpoints come next, launched in 2026.' }
+      ],
+      external: null
+    },
+    cassvo: {
+      title: 'Cassvo',
+      category: 'Branding, UI Design, Social Media',
+      role: 'Brand, UI & Social Media Designer',
+      year: '2026 — ongoing',
+      tags: ['Branding','UI Design','Social Media'],
+      media: { type:'video', src:'assets/cassvo-demo.mp4' },
+      gallery: [
+        {src:'assets/gallery/cassvo-1.jpg'},
+        {src:'assets/gallery/cassvo-2.jpg'},
+        {src:'assets/gallery/cassvo-3.jpg'},
+        {src:'assets/gallery/cassvo-4.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'Build out Cassvo\'s design across three fronts at once — brand identity, product UI, and the social media presence that introduces it to new users.' },
+        { q:'What problem were you solving?', a:'A business-discovery app needed to feel trustworthy and easy on day one, and the brand needed to travel consistently from the app itself out onto social, where most people meet it first.' },
+        { q:'What was your role?', a:'Ongoing brand, UI and social media designer — ownership of the visual system end to end, not just one deliverable.' },
+        { q:'How did you approach it?', a:'Built one bold red-and-white system and applied it everywhere: the app\'s home experience (Featured Businesses, Quick Actions, everyday discovery), the marketing flyers, and the social content, so the brand looks like itself wherever someone finds it.' },
+        { q:'What was the outcome?', a:'A live app on the App Store with a consistent identity across product and social, with design work continuing as the app grows.' }
+      ],
+      external: null
+    },
+    moonlight: {
+      title: 'Moonlight',
+      category: 'Web design, Branding',
+      role: 'UI/UX & Visual Design',
+      year: '2026',
+      tags: ['Web design','Branding'],
+      media: { type:'image', src:'https://mir-s3-cdn-cf.behance.net/projects/404/2ef373253539155.Y3JvcCwxMzA5LDEwMjQsNjQsMA.png' },
+      gallery: [
+        {src:'assets/gallery/moonlight-1.jpg'},
+        {src:'assets/gallery/moonlight-2.jpg'},
+        {src:'assets/gallery/moonlight-3.jpg'},
+        {src:'assets/gallery/moonlight-4.jpg'},
+        {src:'assets/gallery/moonlight-5.jpg'},
+        {src:'assets/gallery/moonlight-6.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'Design a web presence and full brand system for Moonlight, an evening-wear brand, that felt as atmospheric and confident as the clothes themselves.' },
+        { q:'What problem were you solving?', a:'The brand needed a consistent visual language — logo, colour, type — before the website could carry any real weight, so research and identity work came first.' },
+        { q:'What was your role?', a:'UI/UX and visual design across the full system: research, brand identity, and the website that sits on top of it.' },
+        { q:'How did you approach it?', a:'Started with research into the audience and their pain points, then built a dark, cinematic direction with considered typography, keeping every layout decision — spacing, contrast, motion — calm and modern so the brand\'s personality still comes through.' },
+        { q:'What was the outcome?', a:'A complete brand system and website design, documented end to end from research through to the finished logo, colour and typography guidelines.' }
+      ],
+      external: 'https://www.behance.net/gallery/253539155/MOONLIGHT-WEB-DESIGN'
+    },
+    zionnia: {
+      title: 'Zion & Nia Construction',
+      category: 'Brand identity, Signage, Mockups',
+      role: 'Brand & Visual Designer',
+      year: '2026',
+      tags: ['Brand identity','Signage & mockups','Stationery'],
+      media: { type:'image', src:'assets/zion-cover.jpg' },
+      gallery: [
+        {src:'assets/gallery/zion-1.jpg'},
+        {src:'assets/gallery/zion-2.jpg'},
+        {src:'assets/gallery/zion-3.jpg'},
+        {src:'assets/gallery/zion-4.jpg'},
+        {src:'assets/gallery/zion-5.jpg'},
+        {src:'assets/gallery/zion-6.jpg'},
+        {src:'assets/gallery/zion-7.jpg'},
+        {src:'assets/gallery/zion-8.jpg'},
+        {src:'assets/gallery/zion-9.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'Build a brand identity for Zion & Nia Construction, built around the line \"Building What Lasts\" — a look that works on a site hoarding, a hard hat, a letterhead and a billboard alike.' },
+        { q:'What problem were you solving?', a:'In construction, clients choose the company they can trust to deliver on time and safely. The brand had to communicate reliability and long-term value before anyone read a word.' },
+        { q:'What was your role?', a:'Brand and visual design — the logo mark, colour system, typography, and the mockups that show the identity working across signage, workwear, stationery, vehicles, flags, billboards and social.' },
+        { q:'How did you approach it?', a:'Treated the identity like a structure: a bold angular mark, an electric-blue-to-charcoal gradient as the signature, and forest green for balance. The same gradient carries across every touchpoint so the brand reads as one system.' },
+        { q:'What was the outcome?', a:'A complete identity shown in real-world context — site signage, workwear, stationery, vehicle, billboard and social profile — plus a ten-slide Instagram carousel presenting the idea.' }
+      ]
+    },
+    medicube: {
+      title: 'Medicube — From Product to Campaign',
+      category: 'Art direction, Campaign design, Product visuals',
+      role: 'Art Director & Visual Designer',
+      year: '2026',
+      tags: ['Art direction','Campaign design','Product visuals'],
+      media: { type:'video', src:'assets/medicube-demo.mp4' },
+      gallery: [
+        {src:'assets/gallery/medicube-1.jpg'},
+        {src:'assets/gallery/medicube-2.jpg'},
+        {src:'assets/gallery/medicube-3.jpg'},
+        {src:'assets/gallery/medicube-4.jpg'},
+        {src:'assets/gallery/medicube-5.jpg'},
+        {src:'assets/gallery/medicube-6.jpg'},
+        {src:'assets/gallery/medicube-7.jpg'},
+        {src:'assets/gallery/medicube-8.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'A self-initiated concept study: take the Medicube EGF NAD Firming Serum from a plain product shot to a full advertising campaign — art direction, product visuals and campaign decisions.' },
+        { q:'What problem were you solving?', a:'Premium skincare advertising has to feel scientific and desirable at the same time. The campaign needed one clear idea that holds across hero shots, portraits and out-of-home.' },
+        { q:'What was your role?', a:'Art direction and visual design — the colour world, the product hero visuals, the portrait and lifestyle scenes, the benefit callouts and the billboard.' },
+        { q:'How did you approach it?', a:'Anchored everything in a deep burgundy palette that matches the bottle. Water splash and helix imagery signal the science; close portraits and a lifestyle scene bring the human side; clean icon callouts carry the firmness, elasticity and hydration message.' },
+        { q:'What was the outcome?', a:'A cohesive concept campaign — hero, portrait, lifestyle, benefits and billboard — presented as an Instagram carousel with a motion piece.' }
+      ]
+    },
+    stanley: {
+      title: 'Chess Stan',
+      category: 'Apparel Graphics, Branding',
+      role: 'Graphic & Apparel Designer',
+      year: '2026',
+      tags: ['Apparel graphics','Branding'],
+      media: { type:'image', src:'assets/stanley-thumb.jpg' },
+      gallery: [
+        {src:'assets/gallery/stanley-1.jpg'},
+        {src:'assets/gallery/stanley-2.jpg'},
+        {src:'assets/gallery/stanley-3.jpg'},
+        {src:'assets/gallery/stanley-4.jpg'}
+      ],
+      qa: [
+        { q:'What was the brief?', a:'Design apparel graphics for Chess Stan — a chess-themed clothing line — that could print cleanly on both black and white shirts.' },
+        { q:'What problem were you solving?', a:'The brand needed a graphic identity that read as "chess" without being literal or juvenile — something sharp enough for someone to actually want to wear.' },
+        { q:'What was your role?', a:'Graphic and apparel designer — the logo, the front and back print designs, and the mockups used to present them.' },
+        { q:'How did you approach it?', a:'Built the design around a bold "Think. Move. Dominate." line and a chess-board motif, in a navy-and-red palette that reads confidently on both black and white fabric, then mocked up the full front-and-back print on each colourway.' },
+        { q:'What was the outcome?', a:'A finished set of front and back designs for black and white shirts, ready for print, with mockups for showing the line before production.' }
+      ],
+      external: null
+    },
+    pixperfect: {
+      title: 'PixPerfect Creative Studio',
+      category: 'Branding, Visual identity',
+      role: 'Brand & Visual Identity Design',
+      year: '2026',
+      tags: ['Branding','Visual identity'],
+      media: { type:'image', src:'https://mir-s3-cdn-cf.behance.net/projects/404/208db9233085837.Y3JvcCwxMDgwLDg0NCwwLDExNw.png' },
+      gallery: [ {label:'Add image'}, {label:'Add image'}, {label:'Add image'} ],
+      qa: [
+        { q:'What was the brief?', a:'Build a full brand identity for my own studio, PixPerfect Creative — logo, colour palette, typography and usage guidelines.' },
+        { q:'What problem were you solving?', a:'A studio taking on client work needs to look as considered as the work it produces — this was about giving PixPerfect its own consistent, confident presence.' },
+        { q:'What was your role?', a:'Brand and visual identity designer — every part of the system, start to finish.' },
+        { q:'How did you approach it?', a:'Designed a visual language flexible enough to move across social content, client decks and web, while staying instantly recognisable as PixPerfect wherever it shows up.' },
+        { q:'What was the outcome?', a:'A complete, reusable brand system now in active use across the studio\'s own social and client-facing materials.' }
+      ],
+      external: 'https://www.behance.net/gallery/233085837/PixPerfect-Creative-Studio'
+    },
+    kdfoundation: {
+      title: 'KD Foundation',
+      category: 'Brand identity, Visual design',
+      role: 'Brand Identity Design',
+      year: '2026',
+      tags: ['Brand identity','Visual design'],
+      media: { type:'image', src:'https://mir-s3-cdn-cf.behance.net/projects/404/ad5d58232894529.Y3JvcCwxMjI3LDk2MCwyNTUsMA.png' },
+      gallery: [ {label:'Add image'}, {label:'Add image'}, {label:'Add image'} ],
+      qa: [
+        { q:'What was the brief?', a:'Create a brand identity and visual design system for KD Foundation that reflects the foundation\'s mission.' },
+        { q:'What problem were you solving?', a:'The foundation needed a visual language clear and trustworthy enough to work across both print and digital materials without losing consistency.' },
+        { q:'What was your role?', a:'Brand identity designer, responsible for the full visual system.' },
+        { q:'How did you approach it?', a:'Built the identity around clarity and trust first, testing it across the different formats — print and digital — the foundation actually needed to use day to day.' },
+        { q:'What was the outcome?', a:'A consistent brand identity now carrying the foundation\'s messaging wherever it shows up.' }
+      ],
+      external: 'https://www.behance.net/gallery/232894529/KD-FOUNDATION'
+    },
+    oldmutual: {
+      title: 'Old Mutual Pension App',
+      category: 'Mobile UI/UX',
+      role: 'Mobile UI/UX Design',
+      year: '2026',
+      tags: ['Mobile UI/UX'],
+      media: { type:'image', src:'https://mir-s3-cdn-cf.behance.net/projects/404/88fb83232892527.Y3JvcCw0OTA5LDM4NDAsMjc0Niww.png' },
+      gallery: [ {label:'Add image'}, {label:'Add image'}, {label:'Add image'} ],
+      qa: [
+        { q:'What was the brief?', a:'Design the mobile UI/UX for a pension app, taking a traditionally complex product and making it feel simple.' },
+        { q:'What problem were you solving?', a:'Pensions are something people avoid dealing with because the products around them feel confusing — the app needed to reverse that first impression.' },
+        { q:'What was your role?', a:'Mobile UI/UX designer for the app\'s core flows and layouts.' },
+        { q:'How did you approach it?', a:'Prioritised clear flows and accessible layouts throughout, so someone managing their pension feels confident rather than confused at every step.' },
+        { q:'What was the outcome?', a:'A mobile app interface that makes a genuinely important product approachable for everyday users.' }
+      ],
+      external: 'https://www.behance.net/gallery/232892527/OLD-MUTUAL-PENSION-APP'
+    }
+  };
+
+  (function(){
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('p');
+    const data = PROJECTS[slug];
+
+    if(!data){
+      document.getElementById('projectHeroSection').style.display = 'none';
+      document.getElementById('projectBodySection').style.display = 'none';
+      document.getElementById('projectNotFound').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('pageTitle').textContent = data.title + ' — Angelina Alorzuke';
+    document.getElementById('projTitle').textContent = data.title;
+    document.getElementById('projMeta').textContent = data.role + ' · ' + data.year;
+    document.getElementById('projCategory').textContent = data.category;
+    document.getElementById('projYear').textContent = data.year;
+    document.getElementById('projRole').textContent = data.role;
+
+    document.getElementById('projTags').innerHTML = data.tags.map(t => `<span>${t}</span>`).join('');
+
+    const cover = document.getElementById('projCover');
+    const media = data.media;
+    if(media && media.type === 'video'){
+      cover.classList.add('video-cover');
+      if(media.orientation === 'landscape') cover.classList.add('landscape');
+      cover.innerHTML = `<video autoplay muted loop playsinline>
+        <source src="${media.src.replace('.mp4','.webm')}" type="video/webm">
+        <source src="${media.src}" type="video/mp4">
+      </video>`;
+    } else if(media && media.src){
+      cover.innerHTML = `<img src="${media.src}" alt="${data.title} project cover">`;
+    } else {
+      cover.classList.add('placeholder');
+      cover.innerHTML = `<div class="glow"></div><span>${data.title}</span>`;
+    }
+
+    const gallery = document.getElementById('projGallery');
+    const slots = (data.gallery && data.gallery.length) ? data.gallery : [{label:'Add image'},{label:'Add image'},{label:'Add image'}];
+    gallery.innerHTML = slots.map(item => {
+      if(item.src){
+        return `<div class="gallery-item"><img src="${item.src}" alt="${data.title} detail" loading="lazy"></div>`;
+      }
+      return `<div class="gallery-item placeholder"><span>${item.label || 'Add image'}</span></div>`;
+    }).join('');
+    FullView.bind(gallery, '.gallery-item:not(.placeholder)');
+
+    // Five-question write-up format: brief, problem, role, approach, outcome.
+    document.getElementById('projSummary').innerHTML = data.qa.map(item =>
+      `<div class="qa-block"><h4>${item.q}</h4><p>${item.a}</p></div>`
+    ).join('');
+
+    if(data.external){
+      const link = document.getElementById('projExternal');
+      link.href = data.external;
+      link.style.display = 'inline-flex';
+    }
+  })();
+</script>
+
+</body>
+</html>
