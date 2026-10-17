@@ -609,12 +609,12 @@
           <li><b>03</b><span>&mdash; She replies within a couple of days with next steps.</span></li>
         </ul>
         <div class="contact-info">
-          <div>Prefer email? — <b>angiealor555@gmail.com</b></div>
+          <div>Prefer email? — <b><a href="mailto:angiealor555@gmail.com" style="color:inherit">angiealor555@gmail.com</a></b></div>
           <div>Working from <b>Accra, Ghana</b></div>
         </div>
       </div>
 
-      <form id="projectForm" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form id="projectForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
         <div class="form-row">
           <div class="form-field"><label>Name *</label><input type="text" name="name" required></div>
           <div class="form-field"><label>Email *</label><input type="email" name="email" required></div>
@@ -646,7 +646,10 @@
           <div class="form-field"><label>Ideal timeline</label><input type="text" name="timeline" placeholder="e.g. within 3 weeks"></div>
         </div>
         <div class="form-field"><label>Project details *</label><textarea name="details" rows="5" required></textarea></div>
-        <input type="hidden" name="_subject" value="New project inquiry — Angelina Alorzuke portfolio">
+        <input type="hidden" name="access_key" value="b25102b2-1a76-4a1b-9c9b-32e0e4657943">
+        <input type="hidden" name="subject" value="New project inquiry — Angelina Alorzuke portfolio">
+        <input type="hidden" name="from_name" value="Portfolio website">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none">
         <button class="submit-btn" type="submit" id="submitBtn">Submit message →</button>
         <p class="form-status" id="formStatus"></p>
       </form>
@@ -785,17 +788,12 @@
     form.elements['details'].value = 'Custom package estimate: $' + est.toLocaleString('en-US') + (names2 ? ' (' + names2 + ')' : '') + '\n' + (q.get('summary') || '') + '\n\nAbout my project:\n';
   })();
 
-  // ---------- Project inquiry form submission (Formspree) ----------
+  // ---------- Project inquiry form submission (Web3Forms) ----------
   const projectForm = document.getElementById('projectForm');
   const submitBtn = document.getElementById('submitBtn');
   const formStatus = document.getElementById('formStatus');
   projectForm.addEventListener('submit', async function(e){
     e.preventDefault();
-    if(projectForm.action.includes('YOUR_FORM_ID')){
-      formStatus.textContent = "This form isn't connected yet — see the setup note in the page source, or email angiealor555@gmail.com directly.";
-      formStatus.className = 'form-status error';
-      return;
-    }
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
     formStatus.textContent = '';
@@ -806,7 +804,8 @@
         body: new FormData(projectForm),
         headers: { 'Accept': 'application/json' }
       });
-      if(res.ok){
+      const data = await res.json().catch(() => ({}));
+      if(res.ok && data.success){
         formStatus.textContent = "Thanks! Your message is on its way — I'll get back to you within a couple of days.";
         formStatus.classList.add('success');
         projectForm.reset();
