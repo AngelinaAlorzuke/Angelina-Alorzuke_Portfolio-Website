@@ -818,7 +818,14 @@
     border:1px solid var(--line);
     display:flex; align-items:flex-end; padding:24px; position:relative; overflow:hidden;
   }
-  .about-photo .sig{ font-size:34px; color:var(--text); }
+  .about-photo .about-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 28%; }
+  .about-photo::after{ content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.38) 0%, transparent 28%, transparent 58%, rgba(0,0,0,0.62) 100%); }
+  .about-photo .loc, .about-photo .badge-orbit, .about-photo .sig{ position:relative; z-index:2; }
+  .about-photo .about-img ~ .loc{ position:absolute; z-index:2; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,0.55); }
+  .about-photo .badge-orbit{ position:absolute; }
+  .about-photo .about-img ~ .badge-orbit text{ fill:#fff; }
+  .about-photo .sig{ font-size:34px; color:#fff; text-shadow:0 2px 14px rgba(0,0,0,0.55); }
   .about-photo .loc{ position:absolute; top:22px; left:24px; font-size:13px; color:var(--muted); display:flex; align-items:center; gap:7px; }
   .about-eyebrow{ font-size:13px; color:var(--muted-dim); margin-bottom:18px; }
   .about-body p{ font-size:16px; line-height:1.75; color:var(--muted); margin:0 0 26px; max-width:56ch; }
@@ -849,7 +856,7 @@
   .about-statement-body p{ font-size:15.5px; line-height:1.75; color:var(--muted); margin:0 0 20px; max-width:56ch; }
 
   @media (max-width:900px){
-    .about-grid{ grid-template-columns:1fr; } .about-photo{ aspect-ratio:16/9; } .exp-block{ margin-top:40px; }
+    .about-grid{ grid-template-columns:1fr; } .about-photo{ aspect-ratio:4/5; max-height:560px; } .exp-block{ margin-top:40px; }
     .about-statement{ grid-template-columns:1fr; gap:28px; margin-top:50px; padding-top:40px; }
   }
 
@@ -1843,6 +1850,7 @@
     <div class="wrap">
       <div class="about-grid">
         <div class="about-photo">
+          <img class="about-img" src="assets/about-photo.jpg" alt="Portrait of Angelina Alorzuke wearing headphones" loading="lazy">
           <div class="loc">📍 Accra, Ghana</div>
           <div class="badge-orbit">
             <svg viewBox="0 0 100 100">
@@ -1895,7 +1903,7 @@
         <div class="exp-item"><div><div class="exp-role">UI/UX &amp; Graphic Designer</div><div class="exp-org">Cassvo</div></div><div class="exp-date">2026</div></div>
         <div class="exp-item"><div><div class="exp-role">Volunteer Creative Lead</div><div class="exp-org">Learn to Read Foundation</div></div><div class="exp-date">2025 – 2026</div></div>
         <div class="exp-item"><div><div class="exp-role">UI/UX Designer</div><div class="exp-org">Team Alfy Web Services</div></div><div class="exp-date">2024</div></div>
-        <div class="exp-item"><div><div class="exp-role">Junior Graphic Designer</div><div class="exp-org">ICGC Campus Church</div></div><div class="exp-date">2023 – 2024</div></div>
+        <div class="exp-item"><div><div class="exp-role">Intern</div><div class="exp-org">Ecobank Ghana — Head Office</div></div><div class="exp-date">2023</div></div>
         <div class="exp-item"><div><div class="exp-role">Technical Marketing Representative</div><div class="exp-org">Trust Kiosk Initiative</div></div><div class="exp-date">2021</div></div>
       </div>
     </div>
@@ -1930,13 +1938,13 @@
     <div class="wrap">
       <div class="section-head" style="margin-bottom:40px;">
         <h2 class="section-title">On the web</h2>
-        <p class="section-note">Live stats from my Behance profile.</p>
+        <p class="section-note">A snapshot of my Instagram, <a href="https://www.instagram.com/pixperfect_cs/" target="_blank" rel="noopener" style="color:var(--green);">@pixperfect_cs</a> — last 30 days.</p>
       </div>
       <div class="web-row">
-        <div class="web-stat"><b class="count-target" data-count="308">0</b><span>Project views</span></div>
-        <div class="web-stat"><b class="count-target" data-count="56">0</b><span>Appreciations</span></div>
-        <div class="web-stat"><b class="count-target" data-count="12" data-suffix="+">0</b><span>Published projects</span></div>
-        <div class="web-stat"><b class="count-target" data-count="5">0</b><span>Followers</span></div>
+        <div class="web-stat"><b class="count-target" data-count="1945">0</b><span>Views</span></div>
+        <div class="web-stat"><b class="count-target" data-count="612">0</b><span>Profile visits</span></div>
+        <div class="web-stat"><b class="count-target" data-count="571">0</b><span>Interactions</span></div>
+        <div class="web-stat"><b class="count-target" data-count="1104">0</b><span>Followers</span></div>
       </div>
     </div>
   </section>
@@ -2348,7 +2356,7 @@
         function tick(now){
           const progress = Math.min((now - start) / dur, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(eased * end) + suffix;
+          el.textContent = Math.round(eased * end).toLocaleString('en-US') + suffix;
           if(progress < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
@@ -2480,7 +2488,12 @@
     { src:'assets/designs/design-04.jpg', alt:'Lia Beauty salon flyer — washing, revamping and braiding' },
     { src:'assets/designs/design-05.jpg', alt:'Sippy Bar citrus cocktail menu social post' },
     { src:'assets/designs/design-06.jpg', alt:'Lana & Co travel agency social post — Your journey, our priority' },
-    { src:'assets/designs/design-07.jpg', alt:'Sally\'s Salon beauty packages social post' }
+    { src:'assets/designs/design-07.jpg', alt:'Sally\'s Salon beauty packages social post' },
+    { src:'assets/designs/design-08.jpg', alt:'Essentials By Ama opening soon announcement post' },
+    { src:'assets/designs/design-09.jpg', alt:'African Union 2027 Theme of the Year book cover mockup' },
+    { src:'assets/designs/design-10.jpg', alt:'Essentials By Ama — what we offer post' },
+    { src:'assets/designs/design-11.jpg', alt:'PixPerfect breast cancer awareness post — Get checked today, get more tomorrows' },
+    { src:'assets/designs/design-12.jpg', alt:'Brightness Collection services post' }
   ];
   (function(){
     const grid = document.getElementById('designsGrid');
